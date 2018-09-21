@@ -10,11 +10,14 @@ disk::disk()
 void
 disk::read_block(blockid_t id, char *buf)
 {
+  *buf = blocks[id];
+  printf('The block data is %s',*buf)
 }
 
 void
 disk::write_block(blockid_t id, const char *buf)
 {
+  strcpy(blocks[id], *buf);
 }
 
 // block layer -----------------------------------------
@@ -75,8 +78,8 @@ inode_manager::inode_manager()
   bm = new block_manager();
   uint32_t root_dir = alloc_inode(extent_protocol::T_DIR);
   if (root_dir != 1) {
-    printf("\tim: error! alloc first inode %d, should be 1\n", root_dir);
-    exit(0);
+	printf("\tim: error! alloc first inode %d, should be 1\n", root_dir);
+	exit(0);
   }
 }
 
@@ -90,6 +93,7 @@ inode_manager::alloc_inode(uint32_t type)
    * note: the normal inode block should begin from the 2nd inode block.
    * the 1st is used for root_dir, see inode_manager::inode_manager().
    */
+   
   return 1;
 }
 
@@ -117,8 +121,8 @@ inode_manager::get_inode(uint32_t inum)
   printf("\tim: get_inode %d\n", inum);
 
   if (inum < 0 || inum >= INODE_NUM) {
-    printf("\tim: inum out of range\n");
-    return NULL;
+	printf("\tim: inum out of range\n");
+	return NULL;
   }
 
   bm->read_block(IBLOCK(inum, bm->sb.nblocks), buf);
@@ -126,8 +130,8 @@ inode_manager::get_inode(uint32_t inum)
 
   ino_disk = (struct inode*)buf + inum%IPB;
   if (ino_disk->type == 0) {
-    printf("\tim: inode not exist\n");
-    return NULL;
+	printf("\tim: inode not exist\n");
+	return NULL;
   }
 
   ino = (struct inode*)malloc(sizeof(struct inode));
@@ -144,7 +148,7 @@ inode_manager::put_inode(uint32_t inum, struct inode *ino)
 
   printf("\tim: put_inode %d\n", inum);
   if (ino == NULL)
-    return;
+	return;
 
   bm->read_block(IBLOCK(inum, bm->sb.nblocks), buf);
   ino_disk = (struct inode*)buf + inum%IPB;
