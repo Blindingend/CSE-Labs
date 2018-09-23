@@ -10,14 +10,16 @@ disk::disk()
 void
 disk::read_block(blockid_t id, char *buf)
 {
-  *buf = blocks[id];
-  printf('The block data is %s',*buf)
+  memcpy(buf, &blocks[id], BLOCK_SIZE);
+  printf("%c\n", buf);
+  
 }
 
 void
 disk::write_block(blockid_t id, const char *buf)
 {
-  strcpy(blocks[id], *buf);
+  memcpy(&blocks[id], buf, BLOCK_SIZE);
+  printf("%c\n", blocks[id]);
 }
 
 // block layer -----------------------------------------
@@ -31,7 +33,7 @@ block_manager::alloc_block()
    * note: you should mark the corresponding bit in block bitmap when alloc.
    * you need to think about which block you can start to be allocated.
    */
-
+  
   return 0;
 }
 
