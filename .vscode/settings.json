@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.wpy": "vue",
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript",
+        "__locale": "cpp",
+        "ios": "cpp",
+        "iterator": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "vector": "cpp"
+    }
+}

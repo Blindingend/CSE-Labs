@@ -1,5 +1,7 @@
 #include "inode_manager.h"
 
+static int time = 0;
+
 // disk layer -----------------------------------------
 
 disk::disk()
@@ -10,16 +12,23 @@ disk::disk()
 void
 disk::read_block(blockid_t id, char *buf)
 {
-  memcpy(buf, &blocks[id], BLOCK_SIZE);
-  printf("%c\n", buf);
-  
+  fprintf(stderr,"read/n");
+  if(buf&&id < BLOCK_NUM)
+  {
+    memcpy(buf, (char*)blocks[id], BLOCK_SIZE);
+    fprintf(stderr,"%c\n", buf);
+  }
 }
 
 void
 disk::write_block(blockid_t id, const char *buf)
 {
-  memcpy(&blocks[id], buf, BLOCK_SIZE);
-  printf("%c\n", blocks[id]);
+  fprintf(stderr,"write/n");
+  if(buf&&id < BLOCK_NUM)
+  {
+    memcpy((char*)blocks[id], buf, BLOCK_SIZE);
+    fprintf(stderr,"%c\n", blocks[id]);
+  }
 }
 
 // block layer -----------------------------------------
@@ -95,8 +104,33 @@ inode_manager::alloc_inode(uint32_t type)
    * note: the normal inode block should begin from the 2nd inode block.
    * the 1st is used for root_dir, see inode_manager::inode_manager().
    */
-   
-  return 1;
+  struct inode* ino_disk;
+  char buf[BLOCK_SIZE];
+  fprintf(stderr,"starting alloc\n");
+
+   if(type == extent_protocol::T_DIR)
+   {
+     fprintf(stderr,"root_dir\n");
+     return 1;
+   }
+   for(int i = 1; i < INODE_NUM; i++)
+   {
+     fprintf(stderr,"file\n");
+     if(get_inode(i+1) == NULL)
+     {
+         bm->read_block(IBLOCK(i, bm->sb.nblocks), buf);
+         ino_disk = (struct inode*)buf;
+         ino_disk->type = type;
+         ino_disk->size = 0;
+         ino_disk->ctime = time;
+         ino_disk->atime = time;
+         ino_disk->mtime = time;
+         time++;
+         bm->write_block(IBLOCK(i, bm->sb.nblocks), buf);
+         fprintf(stderr,"alloc success");
+         return i;
+     }
+   }
 }
 
 void
@@ -107,7 +141,6 @@ inode_manager::free_inode(uint32_t inum)
    * note: you need to check if the inode is already a freed one;
    * if not, clear it, and remember to write back to disk.
    */
-
   return;
 }
 
@@ -196,7 +229,20 @@ inode_manager::getattr(uint32_t inum, extent_protocol::attr &a)
    * note: get the attributes of inode inum.
    * you can refer to "struct attr" in extent_protocol.h
    */
-  
+  printf("starting attr\n");
+  struct inode *ino;
+  ino = get_inode(inum);
+  if(ino != NULL)
+  {
+    a.size = ino->size;
+    printf("inode size is %d",a.size);
+    a.type = ino->type;
+    a.atime = ino->atime;
+    a.ctime = ino->ctime;
+    a.mtime = ino->mtime;
+  }
+
+  free(ino);
   return;
 }
 
