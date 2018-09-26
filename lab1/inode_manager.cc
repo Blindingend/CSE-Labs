@@ -1,10 +1,14 @@
 #include "inode_manager.h"
 
+static int timer = 0;
+
 // disk layer -----------------------------------------
 
 disk::disk()
 {
   bzero(blocks, sizeof(blocks));
+  memset(blocks[2], 0xFF, INODE_NUM / 8 + BLOCK_NUM / BPB / 8);
+  memset(blocks[2] + INODE_NUM / 8 + BLOCK_NUM / BPB / 8, 0xF, 1);
 }
 
 void disk::read_block(blockid_t id, char *buf)
@@ -38,16 +42,21 @@ block_manager::alloc_block()
   char bitmap[BLOCK_SIZE];
   for(int i = 0; i < bitmap_n; i++)
   {
-    read_block(i+2,bitmap); // skip root block and superblock
+    d->read_block(i+2,bitmap); // skip root block and superblock
     for(int j = 0; j < BPB;j++)
     {
-      if(bitmap[j] == 1)
+      // if(bitmap[j] == 1)
+      if ((bitmap[j/8] >> (j % 8)) & 1)
       {
         continue;
       }
-      bitmap[j]=1;
-      write_block(i+2,bitmap);
-      return i*BPB + j;
+      // bitmap[j]=1;
+      else{
+        bitmap[j/8] |= (1 << (j%8));
+        d->write_block(i+2,bitmap);
+        return i*BPB + j;
+      }
+     
     }
   }
   return 0;
@@ -60,8 +69,9 @@ void block_manager::free_block(uint32_t id)
    * note: you should unmark the corresponding bit in the block bitmap when free.
    */
   char bitmap[BLOCK_SIZE];
-  read_block((id/BPB)+2,bitmap); // read corresponding block of the bitmap contianing the block
-  bitmap[id%BPB] = 0;
+  d->read_block(BBLOCK(id), bitmap);
+  bitmap[(id % BPB) / 8] &= ~(1 << (id % BPB % 8));
+  d->write_block(BBLOCK(id), bitmap);
   return;
 }
 
@@ -123,9 +133,10 @@ inode_manager::alloc_inode(uint32_t type)
       {
         ino_disk->type = type;
         ino_disk->size = 0;
-        ino_disk->ctime = time(0);
-        ino_disk->atime = time(0);
-        ino_disk->mtime = time(0);
+        ino_disk->ctime = timer;
+        ino_disk->atime = timer;
+        ino_disk->mtime = timer;
+        timer ++;
         bm->write_block(IBLOCK(i, bm->sb.nblocks), buf);
         return i;
       }
@@ -191,7 +202,7 @@ void inode_manager::put_inode(uint32_t inum, struct inode *ino)
 }
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define BLOCK_QUANTITY(size) size/BLOCK_SIZE + !(size%BLOCK_SIZE == 0)
+#define BLOCK_QUANTITY(size) size/BLOCK_SIZE + (size%BLOCK_SIZE > 0)
 
 /* Get all the data of a file by inum. 
  * Return alloced data, should be freed by caller. */
@@ -202,8 +213,11 @@ void inode_manager::read_file(uint32_t inum, char **buf_out, int *size)
    * note: read blocks related to inode number inum,
    * and copy them to buf_Out
    */
+  printf("starting read from inode %d\n", inum);
   int cursor = 0; // current reading position
   struct inode *ino = get_inode(inum);
+  if(ino->type = 0 )
+    return;
   int block_q = BLOCK_QUANTITY(ino->size); //data block number
   char *buf = (char*)malloc(block_q*BLOCK_SIZE);
   int indirect[NINDIRECT];
@@ -221,7 +235,7 @@ void inode_manager::read_file(uint32_t inum, char **buf_out, int *size)
     }
     cursor += BLOCK_SIZE;
   }
-
+  printf(">>>>>>>>>>>>>>>>\n%c\n<<<<<<<<<<<<<<<\n", *buf);
   *size = ino->size;
   *buf_out = buf;
   ino->atime++;
@@ -238,47 +252,89 @@ void inode_manager::write_file(uint32_t inum, const char *buf, int size)
    * you need to consider the situation when the size of buf 
    * is larger or smaller than the size of original inode
    */
+  printf("-------starting write file to inode %d\n", inum);
   struct inode *ino = get_inode(inum);
+  if(ino->type ==0)
+    return;
+  char zero_block[BLOCK_SIZE];
+  bzero(zero_block,sizeof(zero_block));
   int new_block_q = BLOCK_QUANTITY(size);
   int old_block_q = BLOCK_QUANTITY(ino->size);
   int indirect[NINDIRECT];
   int cursor = 0; // record current position
-  if(new_block_q>NDIRECT)
-    bm->read_block(ino->blocks[NDIRECT],(char*)indirect);
-  blockid_t blockid_temp;
-  if(new_block_q > old_block_q) // alloc free blocks if needed 
+  if(new_block_q > MAXFILE)
+    return;
+  if(new_block_q >= old_block_q)
   {
-    for(int i = old_block_q; i < new_block_q; i++)
-    {
-      blockid_temp = bm->alloc_block();
-      if(i<NDIRECT)
-      {
-        ino->blocks[i] = blockid_temp;
-      }
-      else
-      {
-      indirect[i-NDIRECT]=blockid_temp;
-      }
-    }
-    bm->write_block(ino->blocks[NDIRECT],(char*)indirect);
+     if(new_block_q <= NDIRECT)
+     {
+       for(int i = old_block_q; i < new_block_q; i++)
+       {
+         ino->blocks[i] = bm->alloc_block();
+       }
+     }
+     else
+     {
+       if(old_block_q <= NDIRECT)
+       {
+         ino->blocks[NDIRECT] = bm->alloc_block();
+       }
+       bm->read_block(ino->blocks[NDIRECT], (char*)indirect);
+       int j;
+       for(j = old_block_q; j < NDIRECT; j++)
+       {
+         ino->blocks[j] = bm->alloc_block();
+       }
+       for(j; j < new_block_q; j++)
+       {
+         indirect[j - NDIRECT] = bm->alloc_block();
+       }
+       bm->write_block(ino->blocks[NDIRECT],(char*)indirect);
+     }
   }
-
-  for(int j = 0; j , new_block_q; j++) // write file
+  else
   {
-    if(j < NINDIRECT)
+    if(old_block_q < NDIRECT)
     {
-      bm->write_block(ino->blocks[j], buf+cursor);
+      for(int i = new_block_q; i < old_block_q; i++)
+      {
+        bm->free_block(ino->blocks[i]);
+      }
     }
     else
     {
-      bm->write_block(indirect[j-NINDIRECT], buf+cursor);
+      bm->read_block(ino->blocks[NDIRECT],(char*)indirect);
+      int j = new_block_q;
+      for(j; j < NDIRECT;j++)
+      {
+        bm->free_block(ino->blocks[j]);
+      }
+      for(j;j<old_block_q;j++)
+      {
+        bm->free_block(indirect[j-NDIRECT]);
+      }
+      bm->free_block(ino->blocks[NDIRECT]);
+      ino->blocks[NDIRECT] = 0;
+      }
+  }
+
+  for (int i = 0; i < new_block_q; i++)
+  {
+    if(i <= NDIRECT)
+    {
+      bm->write_block(ino->blocks[i],buf + cursor);
+    }
+    else
+    {
+      bm->write_block(indirect[i - NDIRECT], buf + cursor);
     }
     cursor += BLOCK_SIZE;
   }
 
+  ino->mtime = timer++;
+  ino->atime = timer++;
   ino->size = size;
-  ino->mtime++;
-  ino->atime++;
+  put_inode(inum,ino);
   return;
 }
 

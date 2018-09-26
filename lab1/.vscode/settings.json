@@ -27,6 +27,7 @@
         "string_view": "cpp",
         "vector": "cpp",
         "istream": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "ostream": "cpp"
     }
 }
