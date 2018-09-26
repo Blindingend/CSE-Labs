@@ -8,7 +8,11 @@
 # hlsearch on (H) or off (h):
 ~h
 # Command Line History (newest to oldest):
+:wq
+:123
+:120
 :q
+:106
 :230
 
 # Search String History (newest to oldest):
@@ -22,13 +26,19 @@
 # Registers:
 
 # File marks:
-'0  232  4  ~/lab1/inode_manager.cc
+'0  123  0  ~/lab1/inode_manager.cc
+'1  120  9  ~/lab1/inode_manager.cc
+'2  113  10  ~/lab1/inode_manager.cc
+'3  232  4  ~/lab1/inode_manager.cc
 
 # Jumplist (newest first):
--'  232  4  ~/lab1/inode_manager.cc
+-'  123  0  ~/lab1/inode_manager.cc
 -'  1  0  ~/lab1/inode_manager.cc
+-'  120  9  ~/lab1/inode_manager.cc
+-'  113  10  ~/lab1/inode_manager.cc
+-'  232  4  ~/lab1/inode_manager.cc
 
 # History of marks within files (newest to oldest):
 
 > ~/lab1/inode_manager.cc
-	"	232	4
+	"	123	0
