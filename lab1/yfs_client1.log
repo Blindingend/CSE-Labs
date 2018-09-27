@@ -1,0 +1,33 @@
+FUSE library version: 2.9.4
+unique: 1, opcode: INIT (26), nodeid: 0, insize: 56, pid: 0
+INIT: 7.26
+flags=0x001ffffb
+max_readahead=0x00020000
+   INIT: 7.19
+   flags=0x00000000
+   max_readahead=0x00020000
+   max_write=0x00020000
+   max_background=0
+   congestion_threshold=0
+   unique: 1, success, outsize: 40
+unique: 2, opcode: LOOKUP (1), nodeid: 1, insize: 97, pid: 4440
+   unique: 2, error: -2 (No such file or directory), outsize: 16
+unique: 3, opcode: CREATE (35), nodeid: 1, insize: 113, pid: 4440
+extent_server: getattr 140730266900016
+	im: get_inode 1368479280
+	im: inum out of range
+isfile: 140730266900016 is a dir
+getattr 00007ffe51915630 0
+extent_server: getattr 140730266900016
+	im: get_inode 1368479280
+	im: inum out of range
+isfile: 140730266900016 is a dir
+getdir 00007ffe51915630
+extent_server: getattr 140730266900016
+	im: get_inode 1368479280
+	im: inum out of range
+   getattr -> 0 0 0
+   unique: 3, success, outsize: 160
+OK: create returns.
+unique: 4, opcode: FORGET (2), nodeid: 1, insize: 48, pid: 0
+fuse: failed to unmount /home/stu/lab1/yfs1: Invalid argument

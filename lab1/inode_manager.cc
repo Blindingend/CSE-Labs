@@ -151,6 +151,12 @@ void inode_manager::free_inode(uint32_t inum)
    * note: you need to check if the inode is already a freed one;
    * if not, clear it, and remember to write back to disk.
    */
+  struct inode * ino = get_inode(inum);
+  if(ino == NULL)
+    return;
+  ino->type = 0;
+  bm->write_block(IBLOCK(inum,bm->sb.nblocks),(char*)ino);
+
   return;
 }
 
@@ -231,7 +237,7 @@ void inode_manager::read_file(uint32_t inum, char **buf_out, int *size)
     }
     else
     {
-      bm->read_block(indirect[i], buf+cursor); // read from indirect block
+      bm->read_block(indirect[i-NDIRECT], buf+cursor); // read from indirect block
     }
     cursor += BLOCK_SIZE;
   }
@@ -263,7 +269,9 @@ void inode_manager::write_file(uint32_t inum, const char *buf, int size)
   int indirect[NINDIRECT];
   int cursor = 0; // record current position
   if(new_block_q > MAXFILE)
+  {
     return;
+  }
   if(new_block_q >= old_block_q)
   {
      if(new_block_q <= NDIRECT)
@@ -280,8 +288,8 @@ void inode_manager::write_file(uint32_t inum, const char *buf, int size)
          ino->blocks[NDIRECT] = bm->alloc_block();
        }
        bm->read_block(ino->blocks[NDIRECT], (char*)indirect);
-       int j;
-       for(j = old_block_q; j < NDIRECT; j++)
+       int j = old_block_q;
+       for(j; j < NDIRECT; j++)
        {
          ino->blocks[j] = bm->alloc_block();
        }
@@ -313,19 +321,25 @@ void inode_manager::write_file(uint32_t inum, const char *buf, int size)
       {
         bm->free_block(indirect[j-NDIRECT]);
       }
-      bm->free_block(ino->blocks[NDIRECT]);
-      ino->blocks[NDIRECT] = 0;
+      if(new_block_q <= NDIRECT)
+      {
+        bm->free_block(ino->blocks[NDIRECT]);
+        ino->blocks[NDIRECT] = 0;
+      }
+
       }
   }
 
   for (int i = 0; i < new_block_q; i++)
   {
-    if(i <= NDIRECT)
+    if(i < NDIRECT)
     {
+      bm->write_block(ino->blocks[i],zero_block);
       bm->write_block(ino->blocks[i],buf + cursor);
     }
     else
     {
+      bm->write_block(indirect[i - NDIRECT], zero_block);
       bm->write_block(indirect[i - NDIRECT], buf + cursor);
     }
     cursor += BLOCK_SIZE;
@@ -365,6 +379,28 @@ void inode_manager::remove_file(uint32_t inum)
    * your code goes here
    * note: you need to consider about both the data block and inode of the file
    */
+  struct inode * ino = get_inode(inum);
+  if(ino == NULL)
+    return;
+  int block_q = BLOCK_QUANTITY(ino->size);
+  int indirect[NINDIRECT];
+  if(block_q > NDIRECT)
+  {
+    bm->read_block(ino->blocks[NDIRECT],(char*)indirect);
+  }
+  for(int i = 0; i < block_q; i++)
+  {
+    if (i < NDIRECT)
+    {
+      bm->free_block(ino->blocks[i]);
+    }
+    else
+    {
+      bm->free_block(indirect[i-NDIRECT]);
+    }
+  }
+
+  free_inode(inum);
 
   return;
 }
