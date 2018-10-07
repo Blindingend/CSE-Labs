@@ -28,6 +28,8 @@
         "vector": "cpp",
         "istream": "cpp",
         "iterator": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "system_error": "cpp",
+        "__mutex_base": "cpp"
     }
 }
