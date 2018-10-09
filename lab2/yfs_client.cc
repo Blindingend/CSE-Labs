@@ -152,8 +152,8 @@ release:
 int
 yfs_client::create(inum parent, const char *name, mode_t mode, inum &ino_out)
 {
+	lc->acquire(parent);
     int r = OK;
-
     /*
      * your code goes here.
      * note: lookup is what you need to check if file exist;
@@ -167,6 +167,7 @@ yfs_client::create(inum parent, const char *name, mode_t mode, inum &ino_out)
 	if(found)
 	{
 		printf("file %lld exists", ino_out);
+		lc->release(parent);
 		return EXIST;
 	}
 	EXT_RPC(ec->create(extent_protocol::T_FILE, ino_out));
@@ -176,8 +177,12 @@ yfs_client::create(inum parent, const char *name, mode_t mode, inum &ino_out)
 	new_entry.name = name;
 	dir_list.push_back(new_entry);
 	if(writedir(parent, dir_list) != OK)
+	{
+		lc->release(parent);
 		return IOERR;
+	}
 	printf("add new entry when create file %s success\n", name);
+	lc->release(parent);
 release:
     return r;
 }
@@ -185,6 +190,7 @@ release:
 int
 yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 {
+	lc->acquire(parent);
     int r = OK;
 
     /*
@@ -200,6 +206,7 @@ yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 	if(found)
 	{
 		printf("mkdir: dir %s exists\n", name);
+		lc->release(parent);
 		return EXIST;
 	}
 	EXT_RPC(ec->create(extent_protocol::T_DIR, ino_out));
@@ -209,7 +216,11 @@ yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 	new_entry.name = name;
 	dir_list.push_back(new_entry);
 	if(writedir(parent, dir_list) != OK)
+	{
+		lc->release(parent);
 		return IOERR;
+	}
+	return IOERR;
 release:
     return r;
 
@@ -248,6 +259,7 @@ release:
 int
 yfs_client::readdir(inum dir, std::list<dirent> &list)
 {
+	lc->acquire(dir);
     int r = OK;
 
     /*
@@ -262,6 +274,7 @@ yfs_client::readdir(inum dir, std::list<dirent> &list)
 	if(ec->get(dir, buf) != extent_protocol::OK)
 	{
 		printf("readdir: error with get\n");
+		lc->release(dir);
 		return IOERR;
 	}
 	std::istringstream ist(buf);
@@ -272,13 +285,13 @@ yfs_client::readdir(inum dir, std::list<dirent> &list)
 		list.push_back(entry);
 	}
 	//printf("yfs:readdir is over!");
-    
+    lc->release(dir);
 	return r;
 }
 
 
 int yfs_client::writedir(inum dir, std::list<dirent>& dir_list) {
-
+	lc->acquire(dir);
 	int r = OK;
     std::ostringstream ost;
 
@@ -289,7 +302,7 @@ int yfs_client::writedir(inum dir, std::list<dirent>& dir_list) {
         ost << it->inum;
     }
    EXT_RPC(ec->put(dir, ost.str()));
-
+   lc->release(dir);
 release:
     return r;
 }
@@ -297,6 +310,7 @@ release:
 int
 yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
 {
+	lc->acquire(ino);
     int r = OK;
 
     /*
@@ -304,16 +318,24 @@ yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
      * note: read using ec->get().
      */
 	if (ino < 0 || ino > INODE_NUM || off < 0)
+	{
+		lc->release(ino);
 		return IOERR;
+	}
 	
 	extent_protocol::attr a;
 	std::string buf;
 	
 	EXT_RPC(ec->getattr(ino, a));
 	if (off >= a.size)
+	{
+		lc->release(ino);
 		return IOERR;
+	}
 	EXT_RPC(ec->get(ino, buf));
 	data = buf.substr(off, size);
+		lc->release(ino);
+
 release:
     return r;
 }
@@ -322,6 +344,7 @@ int
 yfs_client::write(inum ino, size_t size, off_t off, const char *data,
         size_t &bytes_written)
 {
+	lc->acquire(ino);
     int r = OK;
 
     /*
@@ -330,7 +353,10 @@ yfs_client::write(inum ino, size_t size, off_t off, const char *data,
      * when off > length of original file, fill the holes with '\0'.
      */
 	if (ino < 0 || ino > INODE_NUM || off < 0)
+	{
+		lc->release(ino);
 		return IOERR;
+	}
 	std::string buf;
 	EXT_RPC(ec->get(ino, buf));
 
@@ -351,13 +377,14 @@ yfs_client::write(inum ino, size_t size, off_t off, const char *data,
 	}
 	bytes_written = size;
 	EXT_RPC(ec->put(ino, buf));
-
+	lc->release(ino);
 release:
     return r;
 }
 
 int yfs_client::unlink(inum parent,const char *name)
 {
+	lc->acquire(parent);
     int r = OK;
 
     /*
@@ -368,6 +395,7 @@ int yfs_client::unlink(inum parent,const char *name)
 	if(!isdir(parent))
 	{
 		printf("unlink: dir %s is not a dir\n", name);
+		lc->release(parent);
 		return IOERR;
 	}
 	std::list<dirent> dir_list;
@@ -383,11 +411,13 @@ int yfs_client::unlink(inum parent,const char *name)
 		}
 	if (!found)
 	{
+		lc->release(parent);
 		printf("no such file or directory!");
 		return IOERR;
 	}
 	if (!isfile(it->inum))
 	{
+		lc->release(parent);
 		printf("%s is not a file\n", name);
 		return IOERR;
 	}
@@ -395,18 +425,22 @@ int yfs_client::unlink(inum parent,const char *name)
 	dir_list.erase(it);
 	if(writedir(parent, dir_list) != OK)
 	{
+		lc->release(parent);
 		printf("writedir error!");
 		return IOERR;
 	}
+	lc->release(parent);
 release:
     return r;
 }
 
 int yfs_client::symlink(inum parent, const char *link, const char *name, inum& ino_out)
 {
+	lc->acquire(parent);
 	int r= OK;
 	if (!isdir(parent))
 	{
+		lc->release(parent);
 		printf("symlink: dir %s is not a dir\n", name);
 		return IOERR;
 	}
@@ -415,7 +449,10 @@ int yfs_client::symlink(inum parent, const char *link, const char *name, inum& i
 	std::list<dirent> dir_list;
 	EXT_RPC(lookup(parent, name, found, ino_out));
 	if(found)
+	{
+		lc->release(parent);
 		return EXIST;
+	}
 	EXT_RPC(ec->create(extent_protocol::T_SLINK, ino_out));
 	EXT_RPC(ec->put(ino_out, link));
 	EXT_RPC(readdir(parent, dir_list));	
@@ -423,8 +460,11 @@ int yfs_client::symlink(inum parent, const char *link, const char *name, inum& i
 	new_entry.name = name;
 	dir_list.push_back(new_entry);
 	if(writedir(parent, dir_list) != OK)
+	{
+		lc->release(parent);
 		return IOERR;
-
+	}
+	lc->release(parent);
 release:
 	return r;
 }
