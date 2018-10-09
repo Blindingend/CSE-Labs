@@ -152,7 +152,7 @@ release:
 int
 yfs_client::create(inum parent, const char *name, mode_t mode, inum &ino_out)
 {
-	// lc->acquire(parent);
+	lc->acquire(parent);
     int r = OK;
     /*
      * your code goes here.
@@ -206,7 +206,7 @@ yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 	if(found)
 	{
 		printf("mkdir: dir %s exists\n", name);
-		lc->release(parent);
+		// lc->release(parent);
 		return EXIST;
 	}
 	EXT_RPC(ec->create(extent_protocol::T_DIR, ino_out));
@@ -217,10 +217,10 @@ yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 	dir_list.push_back(new_entry);
 	if(writedir(parent, dir_list) != OK)
 	{
-		lc->release(parent);
+		// lc->release(parent);
 		return IOERR;
 	}
-	return IOERR;
+	// lc->release(parent);
 release:
     return r;
 
@@ -274,7 +274,7 @@ yfs_client::readdir(inum dir, std::list<dirent> &list)
 	if(ec->get(dir, buf) != extent_protocol::OK)
 	{
 		printf("readdir: error with get\n");
-		lc->release(dir);
+		// lc->release(dir);
 		return IOERR;
 	}
 	std::istringstream ist(buf);
@@ -285,7 +285,7 @@ yfs_client::readdir(inum dir, std::list<dirent> &list)
 		list.push_back(entry);
 	}
 	//printf("yfs:readdir is over!");
-    lc->release(dir);
+    // lc->release(dir);
 	return r;
 }
 
@@ -302,7 +302,7 @@ int yfs_client::writedir(inum dir, std::list<dirent>& dir_list) {
         ost << it->inum;
     }
    EXT_RPC(ec->put(dir, ost.str()));
-   lc->release(dir);
+//    lc->release(dir);
 release:
     return r;
 }
@@ -310,7 +310,7 @@ release:
 int
 yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
 {
-	// lc->acquire(ino);
+	lc->acquire(ino);
     int r = OK;
 
     /*
@@ -319,7 +319,7 @@ yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
      */
 	if (ino < 0 || ino > INODE_NUM || off < 0)
 	{
-		lc->release(ino);
+		// lc->release(ino);
 		return IOERR;
 	}
 	
@@ -344,7 +344,7 @@ int
 yfs_client::write(inum ino, size_t size, off_t off, const char *data,
         size_t &bytes_written)
 {
-	// lc->acquire(ino);
+	lc->acquire(ino);
     int r = OK;
 
     /*
@@ -384,7 +384,7 @@ release:
 
 int yfs_client::unlink(inum parent,const char *name)
 {
-	// lc->acquire(parent);
+	lc->acquire(parent);
     int r = OK;
 
     /*
@@ -440,7 +440,7 @@ int yfs_client::symlink(inum parent, const char *link, const char *name, inum& i
 	int r= OK;
 	if (!isdir(parent))
 	{
-		lc->release(parent);
+		// lc->release(parent);
 		printf("symlink: dir %s is not a dir\n", name);
 		return IOERR;
 	}
@@ -450,7 +450,7 @@ int yfs_client::symlink(inum parent, const char *link, const char *name, inum& i
 	EXT_RPC(lookup(parent, name, found, ino_out));
 	if(found)
 	{
-		lc->release(parent);
+		// lc->release(parent);
 		return EXIST;
 	}
 	EXT_RPC(ec->create(extent_protocol::T_SLINK, ino_out));
@@ -461,10 +461,10 @@ int yfs_client::symlink(inum parent, const char *link, const char *name, inum& i
 	dir_list.push_back(new_entry);
 	if(writedir(parent, dir_list) != OK)
 	{
-		lc->release(parent);
+		// lc->release(parent);
 		return IOERR;
 	}
-	lc->release(parent);
+	// lc->release(parent);
 release:
 	return r;
 }

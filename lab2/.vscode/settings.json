@@ -15,6 +15,9 @@
         "typeinfo": "cpp",
         "algorithm": "cpp",
         "sstream": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "__mutex_base": "cpp",
+        "memory": "cpp",
+        "list": "cpp"
     }
 }
