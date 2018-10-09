@@ -152,7 +152,7 @@ release:
 int
 yfs_client::create(inum parent, const char *name, mode_t mode, inum &ino_out)
 {
-	lc->acquire(parent);
+	// lc->acquire(parent);
     int r = OK;
     /*
      * your code goes here.
@@ -190,7 +190,7 @@ release:
 int
 yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 {
-	lc->acquire(parent);
+	// lc->acquire(parent);
     int r = OK;
 
     /*
@@ -259,7 +259,7 @@ release:
 int
 yfs_client::readdir(inum dir, std::list<dirent> &list)
 {
-	lc->acquire(dir);
+	// lc->acquire(dir);
     int r = OK;
 
     /*
@@ -291,7 +291,7 @@ yfs_client::readdir(inum dir, std::list<dirent> &list)
 
 
 int yfs_client::writedir(inum dir, std::list<dirent>& dir_list) {
-	lc->acquire(dir);
+	// lc->acquire(dir);
 	int r = OK;
     std::ostringstream ost;
 
@@ -310,7 +310,7 @@ release:
 int
 yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
 {
-	lc->acquire(ino);
+	// lc->acquire(ino);
     int r = OK;
 
     /*
@@ -344,7 +344,7 @@ int
 yfs_client::write(inum ino, size_t size, off_t off, const char *data,
         size_t &bytes_written)
 {
-	lc->acquire(ino);
+	// lc->acquire(ino);
     int r = OK;
 
     /*
@@ -384,7 +384,7 @@ release:
 
 int yfs_client::unlink(inum parent,const char *name)
 {
-	lc->acquire(parent);
+	// lc->acquire(parent);
     int r = OK;
 
     /*
@@ -436,7 +436,7 @@ release:
 
 int yfs_client::symlink(inum parent, const char *link, const char *name, inum& ino_out)
 {
-	lc->acquire(parent);
+	// lc->acquire(parent);
 	int r= OK;
 	if (!isdir(parent))
 	{

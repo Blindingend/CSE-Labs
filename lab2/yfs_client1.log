@@ -10,9 +10,9 @@ max_readahead=0x00020000
    max_background=0
    congestion_threshold=0
    unique: 1, success, outsize: 40
-unique: 2, opcode: LOOKUP (1), nodeid: 1, insize: 98, pid: 9104
+unique: 2, opcode: LOOKUP (1), nodeid: 1, insize: 98, pid: 9715
 isdir: 1 is a dir
    unique: 2, error: -2 (No such file or directory), outsize: 16
-unique: 3, opcode: CREATE (35), nodeid: 1, insize: 114, pid: 9104
+unique: 3, opcode: CREATE (35), nodeid: 1, insize: 114, pid: 9715
 isdir: 1 is a dir
 yfs_client: lock_client.cc:36: virtual lock_protocol::status lock_client::acquire(lock_protocol::lockid_t): Assertion `ret == lock_protocol::OK' failed.

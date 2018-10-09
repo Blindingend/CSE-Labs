@@ -10,11 +10,19 @@ max_readahead=0x00020000
    max_background=0
    congestion_threshold=0
    unique: 1, success, outsize: 40
-unique: 2, opcode: GETATTR (3), nodeid: 1, insize: 56, pid: 9107
+unique: 2, opcode: GETATTR (3), nodeid: 1, insize: 56, pid: 9717
 isfile: 1 is a dir
 getattr 0000000000000001 0
 isfile: 1 is a dir
 isdir: 1 is a dir
 getdir 0000000000000001
-   getattr -> 1539090897 1539090895 1539090895
+   getattr -> 1539093393 1539093391 1539093391
    unique: 2, success, outsize: 120
+unique: 3, opcode: GETATTR (3), nodeid: 1, insize: 56, pid: 9718
+isfile: 1 is a dir
+getattr 0000000000000001 0
+isfile: 1 is a dir
+isdir: 1 is a dir
+getdir 0000000000000001
+   getattr -> 1539093393 1539093391 1539093391
+   unique: 3, success, outsize: 120
