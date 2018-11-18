@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.wpy": "vue",
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript",
+        "set": "cpp",
+        "iosfwd": "cpp"
+    }
+}
