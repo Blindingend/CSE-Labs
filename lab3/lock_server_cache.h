@@ -5,12 +5,12 @@
 
 
 #include <map>
-#include <queue>
 #include <set>
-#include <algorithm>
+#include <queue>
 #include "lock_protocol.h"
 #include "rpc.h"
 #include "lock_server.h"
+#include <algorithm>
 
 
 class lock_server_cache {

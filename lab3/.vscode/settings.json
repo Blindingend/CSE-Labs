@@ -5,6 +5,7 @@
         "*.wxss": "css",
         "*.wxs": "javascript",
         "set": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "queue": "cpp"
     }
 }
