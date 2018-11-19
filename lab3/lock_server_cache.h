@@ -18,8 +18,8 @@ class lock_server_cache {
   int nacquire;
   std::map<lock_protocol::lockid_t, std::queue<std::string> > lock_map;
   std::map<lock_protocol::lockid_t, std::set<std::string> > wait_set;
-  static pthread_mutex_t mutex;
-  static pthread_cond_t cond;
+  pthread_mutex_t mutex;
+  pthread_cond_t cond;
  public:
   lock_server_cache();
   lock_protocol::status stat(lock_protocol::lockid_t, int &);

@@ -22,7 +22,7 @@ int lock_server_cache::acquire(lock_protocol::lockid_t lid, std::string id,
 {
   lock_protocol::status ret = lock_protocol::OK;
   pthread_mutex_lock(&mutex);
-  if(lock_map[lid].empty) // if the lock is free
+  if(lock_map[lid].empty()) // if the lock is free
   {
     lock_map[lid].push(id);
     r = lock_protocol::OK;

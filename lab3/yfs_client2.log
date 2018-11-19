@@ -10,3 +10,429 @@ max_readahead=0x00020000
    max_background=0
    congestion_threshold=0
    unique: 1, success, outsize: 40
+unique: 2, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 3944
+isdir: 1 is a dir
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 2, success, outsize: 144
+unique: 3, opcode: GETATTR (3), nodeid: 259, insize: 56, pid: 3944
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 3, success, outsize: 120
+unique: 4, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 3944
+isdir: 1 is a dir
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 4, success, outsize: 144
+unique: 5, opcode: GETATTR (3), nodeid: 259, insize: 56, pid: 3944
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 5, success, outsize: 120
+unique: 6, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 3944
+isdir: 1 is a dir
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 6, success, outsize: 144
+unique: 7, opcode: UNLINK (10), nodeid: 1, insize: 46, pid: 3944
+isdir: 1 is a dir
+isfile: 259 is a dir
+hosts is not a file
+   unique: 7, error: -39 (Directory not empty), outsize: 16
+unique: 8, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3944
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 8, success, outsize: 144
+unique: 9, opcode: GETATTR (3), nodeid: 261, insize: 56, pid: 3944
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 9, success, outsize: 120
+unique: 10, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3944
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 10, success, outsize: 144
+unique: 11, opcode: GETATTR (3), nodeid: 261, insize: 56, pid: 3944
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 11, success, outsize: 120
+unique: 12, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3944
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 12, success, outsize: 144
+unique: 13, opcode: UNLINK (10), nodeid: 1, insize: 54, pid: 3944
+isdir: 1 is a dir
+isfile: 261 is a dir
+testhostslink is not a file
+   unique: 13, error: -39 (Directory not empty), outsize: 16
+unique: 14, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3944
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 14, success, outsize: 144
+unique: 15, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3944
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 15, success, outsize: 120
+unique: 16, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3944
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 16, success, outsize: 144
+unique: 17, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3944
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 17, success, outsize: 120
+unique: 18, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3944
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 18, success, outsize: 144
+unique: 19, opcode: ACCESS (34), nodeid: 260, insize: 48, pid: 3944
+   unique: 19, error: -38 (Function not implemented), outsize: 16
+unique: 20, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3944
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 20, success, outsize: 144
+unique: 21, opcode: UNLINK (10), nodeid: 1, insize: 51, pid: 3944
+isdir: 1 is a dir
+isfile: 260 is a file
+   unique: 21, success, outsize: 16
+unique: 22, opcode: FORGET (2), nodeid: 260, insize: 48, pid: 0
+unique: 23, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 3944
+isdir: 1 is a dir
+   unique: 23, error: -2 (No such file or directory), outsize: 16
+unique: 24, opcode: LOOKUP (1), nodeid: 1, insize: 52, pid: 3944
+isdir: 1 is a dir
+   unique: 24, error: -2 (No such file or directory), outsize: 16
+unique: 25, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 3945
+isdir: 1 is a dir
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 25, success, outsize: 144
+unique: 26, opcode: READLINK (5), nodeid: 259, insize: 40, pid: 3945
+   unique: 26, success, outsize: 26
+unique: 27, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 3945
+isdir: 1 is a dir
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 27, success, outsize: 144
+unique: 28, opcode: LOOKUP (1), nodeid: 1, insize: 46, pid: 3946
+isdir: 1 is a dir
+isfile: 259 is a dir
+getattr 0000000000000103 0
+isfile: 259 is a dir
+getslink 0000000000000103 -> sz 10
+   unique: 28, success, outsize: 144
+unique: 29, opcode: READLINK (5), nodeid: 259, insize: 40, pid: 3946
+   unique: 29, success, outsize: 26
+unique: 30, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3947
+isdir: 1 is a dir
+   unique: 30, error: -2 (No such file or directory), outsize: 16
+unique: 31, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3947
+isdir: 1 is a dir
+   unique: 31, error: -2 (No such file or directory), outsize: 16
+unique: 32, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3947
+isdir: 1 is a dir
+   unique: 32, error: -2 (No such file or directory), outsize: 16
+unique: 33, opcode: CREATE (35), nodeid: 1, insize: 67, pid: 3947
+isdir: 1 is a dir
+create file hosts_copy success
+add new entry when create file hosts_copy success
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 33, success, outsize: 160
+OK: create returns.
+unique: 34, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3947
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 34, success, outsize: 120
+unique: 35, opcode: GETXATTR (22), nodeid: 260, insize: 68, pid: 3947
+   unique: 35, error: -38 (Function not implemented), outsize: 16
+unique: 36, opcode: WRITE (16), nodeid: 260, insize: 254, pid: 3947
+   unique: 36, success, outsize: 24
+unique: 37, opcode: FLUSH (25), nodeid: 260, insize: 64, pid: 3947
+   unique: 37, error: -38 (Function not implemented), outsize: 16
+unique: 38, opcode: RELEASE (18), nodeid: 260, insize: 64, pid: 0
+   unique: 38, success, outsize: 16
+unique: 39, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3948
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 39, success, outsize: 144
+unique: 40, opcode: READLINK (5), nodeid: 261, insize: 40, pid: 3948
+   unique: 40, success, outsize: 26
+unique: 41, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3948
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 41, success, outsize: 144
+unique: 42, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3948
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 42, success, outsize: 120
+unique: 43, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3948
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 43, success, outsize: 144
+unique: 44, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3949
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 44, success, outsize: 144
+unique: 45, opcode: READLINK (5), nodeid: 261, insize: 40, pid: 3949
+   unique: 45, success, outsize: 26
+unique: 46, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3949
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 46, success, outsize: 144
+unique: 47, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3949
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 47, success, outsize: 120
+unique: 48, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3949
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 48, success, outsize: 144
+unique: 49, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3949
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 49, success, outsize: 120
+unique: 50, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3950
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 50, success, outsize: 144
+unique: 51, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3950
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 51, success, outsize: 120
+unique: 52, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3950
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 52, success, outsize: 144
+unique: 53, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3950
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 53, success, outsize: 120
+unique: 54, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3950
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 54, success, outsize: 144
+unique: 55, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3950
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 174
+   getattr -> 174
+   unique: 55, success, outsize: 144
+unique: 56, opcode: UNLINK (10), nodeid: 1, insize: 51, pid: 3950
+isdir: 1 is a dir
+isfile: 260 is a file
+   unique: 56, success, outsize: 16
+unique: 57, opcode: FORGET (2), nodeid: 260, insize: 48, pid: 0
+unique: 58, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3951
+isdir: 1 is a dir
+   unique: 58, error: -2 (No such file or directory), outsize: 16
+unique: 59, opcode: CREATE (35), nodeid: 1, insize: 67, pid: 3951
+isdir: 1 is a dir
+create file hosts_copy success
+add new entry when create file hosts_copy success
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 59, success, outsize: 160
+OK: create returns.
+unique: 60, opcode: SETATTR (4), nodeid: 260, insize: 128, pid: 3951
+fuseserver_setattr 0x1b0
+   unique: 60, error: -38 (Function not implemented), outsize: 16
+unique: 61, opcode: SETATTR (4), nodeid: 260, insize: 128, pid: 3951
+fuseserver_setattr 0x1b0
+   unique: 61, error: -38 (Function not implemented), outsize: 16
+unique: 62, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3951
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 62, success, outsize: 144
+unique: 63, opcode: SETATTR (4), nodeid: 260, insize: 128, pid: 3951
+fuseserver_setattr 0x1b0
+   unique: 63, error: -38 (Function not implemented), outsize: 16
+unique: 64, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3951
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 64, success, outsize: 144
+unique: 65, opcode: SETATTR (4), nodeid: 260, insize: 128, pid: 3951
+fuseserver_setattr 0x1b0
+   unique: 65, error: -38 (Function not implemented), outsize: 16
+unique: 66, opcode: RELEASE (18), nodeid: 260, insize: 64, pid: 0
+   unique: 66, success, outsize: 16
+unique: 67, opcode: LOOKUP (1), nodeid: 1, insize: 54, pid: 3952
+isdir: 1 is a dir
+isfile: 261 is a dir
+getattr 0000000000000105 0
+isfile: 261 is a dir
+getslink 0000000000000105 -> sz 10
+   unique: 67, success, outsize: 144
+unique: 68, opcode: READLINK (5), nodeid: 261, insize: 40, pid: 3952
+   unique: 68, success, outsize: 26
+unique: 69, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3952
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 69, success, outsize: 144
+unique: 70, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3952
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 70, success, outsize: 120
+unique: 71, opcode: LOOKUP (1), nodeid: 1, insize: 51, pid: 3952
+isdir: 1 is a dir
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 71, success, outsize: 144
+unique: 72, opcode: GETATTR (3), nodeid: 260, insize: 56, pid: 3952
+isfile: 260 is a file
+getattr 0000000000000104 1
+isfile: 260 is a file
+getfile 0000000000000104
+getfile 0000000000000104 -> sz 0
+   getattr -> 0
+   unique: 72, success, outsize: 120

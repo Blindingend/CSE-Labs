@@ -17,7 +17,7 @@ lock_client_cache::lock_client_cache(std::string xdst,
 				     class lock_release_user *_lu)
   : lock_client(xdst), lu(_lu)
 {
-  for (int i = 0; i < 1024; i++)
+  for (int i = 0; i < 1100; i++)
   {
     cond[i] = PTHREAD_COND_INITIALIZER;
   }
