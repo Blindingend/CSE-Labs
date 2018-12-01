@@ -28,7 +28,7 @@ class lock_client_cache : public lock_client {
   std::string id;
   std::map<lock_protocol::lockid_t, int> lock_map;
   pthread_mutex_t mutex;
-  pthread_cond_t cond[1100];
+  pthread_cond_t cond[1024];
  public:
   static int last_port;
   lock_client_cache(std::string xdst, class lock_release_user *l = 0);

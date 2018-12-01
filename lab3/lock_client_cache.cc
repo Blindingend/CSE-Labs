@@ -17,7 +17,7 @@ lock_client_cache::lock_client_cache(std::string xdst,
 				     class lock_release_user *_lu)
   : lock_client(xdst), lu(_lu)
 {
-  for (int i=0;i<1100;i++){
+  for (int i=0;i<1024;i++){
     cond[i] = PTHREAD_COND_INITIALIZER;
   }
   mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -126,7 +126,7 @@ lock_client_cache::retry_handler(lock_protocol::lockid_t lid,  int state, int & 
     pthread_cond_signal(&cond[lid]);
     r = rlock_protocol::OK;
   }else{
-    r = 2;
+    r = rlock_protocol::REVOKE;
   }
   pthread_mutex_unlock(&mutex);
   return ret;
