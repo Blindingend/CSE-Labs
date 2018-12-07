@@ -192,6 +192,8 @@ int
 yfs_client::mkdir(inum parent, const char *name, mode_t mode, inum &ino_out)
 {
     int r = OK;
+	fprintf(stderr, "xxxxwoshilog");
+	fflush(stdout);
 
     /*
      * your code goes here. 

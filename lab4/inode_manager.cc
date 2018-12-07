@@ -433,8 +433,8 @@ void inode_manager::remove_file(uint32_t inum)
 
 void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 {
-	std::cout << 'inoappend' << std::endl;
-	std::cout.flush();
+	fprintf(stderr, "im append block woshilog\n");
+	fflush(stdout);
 	/*
    * your code goes here.
    */
@@ -464,8 +464,8 @@ void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 
 void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids)
 {
-	std::cout << 'inogetblockids' << std::endl;
-	std::cout.flush();
+	fprintf(stderr, "im get block ids woshilog\n");
+	fflush(stdout);
 	/*
    * your code goes here.
    */
@@ -501,8 +501,8 @@ void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids
 
 void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 {
-	std::cout << 'inoread' << std::endl;
-	std::cout.flush();
+	fprintf(stderr, "im write block woshilog\n");
+	fflush(stdout);
 
 	/*
    * your code goes here.
@@ -512,8 +512,8 @@ void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 
 void inode_manager::write_block(blockid_t id, const char buf[BLOCK_SIZE])
 {
-	std::cout << 'inowr' << std::endl;
-	std::cout.flush();
+	fprintf(stderr, "im write block woshilog\n");
+	fflush(stdout);
 
 	/*
    * your code goes here.
@@ -523,8 +523,9 @@ void inode_manager::write_block(blockid_t id, const char buf[BLOCK_SIZE])
 
 void inode_manager::complete(uint32_t inum, uint32_t size)
 {
-	std::cout << 'inocomp' << std::endl;
-	std::cout.flush();
+	fprintf(stderr, "im complete woshilog\n");
+	fflush(stdout);
+
 	/*
    * your code goes here.
    */

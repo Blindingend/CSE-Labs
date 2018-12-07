@@ -19,6 +19,7 @@ void NameNode::init(const string &extent_dst, const string &lock_dst)
 list<NameNode::LocatedBlock> NameNode::GetBlockLocations(yfs_client::inum ino)
 {
 	std::cout << "get locations:" << ino << std::endl;
+	
 	cout.flush();
 
 	std::list<blockid_t> blockids;
@@ -108,8 +109,11 @@ bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client:
 
 bool NameNode::Mkdir(yfs_client::inum parent, string name, mode_t mode, yfs_client::inum &ino_out)
 {
-	std::cout << "mkdir:" << name << "mode:" << mode << std::endl;
-	cout.flush();
+	// std::cout << "mkdir:" << name << "mode:" << mode << std::endl;
+	// cout.flush();
+	fprintf(stderr, "mkdir woshilog\n");
+	fflush(stdout);
+
 	
 	bool res = yfs->mkdir(parent, name.c_str(), mode, ino_out);
 	return !res;
@@ -117,8 +121,10 @@ bool NameNode::Mkdir(yfs_client::inum parent, string name, mode_t mode, yfs_clie
 
 bool NameNode::Create(yfs_client::inum parent, string name, mode_t mode, yfs_client::inum &ino_out)
 {
-	std::cout << "create:" << name << "mode:" << mode << std::endl;
-	cout.flush();
+	// std::cout << "create:" << name << "mode:" << mode << std::endl;
+	// cout.flush();
+	fprintf(stderr, "create woshilog\n");
+	fflush(stdout);
 	
 	bool res = yfs->create(parent, name.c_str(), mode, ino_out);
 	return !res;
@@ -126,18 +132,27 @@ bool NameNode::Create(yfs_client::inum parent, string name, mode_t mode, yfs_cli
 
 bool NameNode::Isfile(yfs_client::inum ino)
 {
+	fprintf(stderr, "isfile woshilog\n");
+	fflush(stdout);
+
 	bool res  = yfs->isfile(ino);
 	return res;
 }
 
 bool NameNode::Isdir(yfs_client::inum ino)
 {
+	fprintf(stderr, "isdirwoshilog\n");
+	fflush(stdout);
+
 	bool res = yfs->isdir(ino);
 	return res;
 }
 
 bool NameNode::Getfile(yfs_client::inum ino, yfs_client::fileinfo &info)
 {
+	fprintf(stderr, "getfilewoshilog\n");
+	fflush(stdout);
+
 	bool res = yfs->getfile(ino, info);
 
 	return res;
@@ -145,20 +160,30 @@ bool NameNode::Getfile(yfs_client::inum ino, yfs_client::fileinfo &info)
 
 bool NameNode::Getdir(yfs_client::inum ino, yfs_client::dirinfo &info)
 {
+	fprintf(stderr, "getdirwoshilog\n");
+	fflush(stdout);
+
 	bool res = yfs->getdir(ino, info);
 	return res;
 }
 
 bool NameNode::Readdir(yfs_client::inum ino, std::list<yfs_client::dirent> &dir)
 {
+	fprintf(stderr, "readdir woshilog\n");
+	fflush(stdout);
+
 	bool res = yfs->readdir(ino, dir);
 	return res;
 }
 
 bool NameNode::Unlink(yfs_client::inum parent, string name, yfs_client::inum ino)
 {
-	std::cout << "unlink" << parent << " and " << name << std::endl;
-	cout.flush();
+	// std::cout << "unlink" << parent << " and " << name << std::endl;
+	// cout.flush();
+
+	fprintf(stderr, "unlink woshilog\n");
+	fflush(stdout);
+
 
 	bool res = yfs->unlink(parent, name.c_str());
 	return res;

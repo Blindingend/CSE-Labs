@@ -19,3 +19,5 @@ lock_server
 *.log
 libprotobuf.a
 proto
+yfs1
+yfs2
