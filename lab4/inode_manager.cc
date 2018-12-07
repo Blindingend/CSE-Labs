@@ -275,7 +275,7 @@ void inode_manager::write_file(uint32_t inum, const char *buf, int size)
 					memset(temp, 0, BLOCK_SIZE);
 					int cpylen = MIN(size - i * BLOCK_SIZE, BLOCK_SIZE);
 					memcpy(temp, buf + i * BLOCK_SIZE, cpylen);
-					inode_t ino = get_inode(inum);
+					inode_t* ino = get_inode(inum);
 					if (ino == NULL)
 						bm->write_block(ino->blocks[i], temp);
 				}
@@ -433,6 +433,8 @@ void inode_manager::remove_file(uint32_t inum)
 
 void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 {
+	std::cout << 'inoappend' << std::endl;
+	std::cout.flush();
 	/*
    * your code goes here.
    */
@@ -450,17 +452,20 @@ void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 	else{
 		if(blocknum = NDIRECT)
 		{
-			ino->blocks[NDIRECT] = bm->alloc_block;
+			ino->blocks[NDIRECT] = bm->alloc_block();
 		}
 		bm->read_block(ino->blocks[NDIRECT], (char*)NIN);
 		NIN[blocknum-NDIRECT] = blockid;
-		bm->write_block(ino->blocks[NDIRECT], (char*)NIN]);
+		bm->write_block(ino->blocks[NDIRECT], (char*)NIN);
 	}
+	ino->size += BLOCK_SIZE;
 	put_inode(inum, ino);
 }
 
 void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids)
 {
+	std::cout << 'inogetblockids' << std::endl;
+	std::cout.flush();
 	/*
    * your code goes here.
    */
@@ -496,6 +501,9 @@ void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids
 
 void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 {
+	std::cout << 'inoread' << std::endl;
+	std::cout.flush();
+
 	/*
    * your code goes here.
    */
@@ -504,6 +512,9 @@ void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 
 void inode_manager::write_block(blockid_t id, const char buf[BLOCK_SIZE])
 {
+	std::cout << 'inowr' << std::endl;
+	std::cout.flush();
+
 	/*
    * your code goes here.
    */
@@ -512,10 +523,12 @@ void inode_manager::write_block(blockid_t id, const char buf[BLOCK_SIZE])
 
 void inode_manager::complete(uint32_t inum, uint32_t size)
 {
+	std::cout << 'inocomp' << std::endl;
+	std::cout.flush();
 	/*
    * your code goes here.
    */
-   inode_t *ino = get_inode(inum);
+	inode_t *ino = get_inode(inum);
 	if (ino == NULL)
 		return;
 
