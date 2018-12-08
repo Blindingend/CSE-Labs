@@ -18,9 +18,8 @@ void NameNode::init(const string &extent_dst, const string &lock_dst)
 
 list<NameNode::LocatedBlock> NameNode::GetBlockLocations(yfs_client::inum ino)
 {
-	std::cout << "get locations:" << ino << std::endl;
-	
-	cout.flush();
+	fprintf(stderr, "getLocations %s woshilog\n", ino);
+	fflush(stderr);
 
 	std::list<blockid_t> blockids;
 	list<LocatedBlock> LBList;
@@ -41,8 +40,8 @@ list<NameNode::LocatedBlock> NameNode::GetBlockLocations(yfs_client::inum ino)
 
 bool NameNode::Complete(yfs_client::inum ino, uint32_t new_size)
 {
-	std::cout << "complete:" << ino << "size:" << new_size << std::endl;
-	cout.flush();
+	fprintf(stderr, "complete %s woshilog\n", ino);
+	fflush(stderr);
 
 	extent_protocol::status res = ec->complete(ino, new_size);
 	if(res == extent_protocol::OK)
@@ -56,8 +55,8 @@ bool NameNode::Complete(yfs_client::inum ino, uint32_t new_size)
 
 NameNode::LocatedBlock NameNode::AppendBlock(yfs_client::inum ino)
 {
-	std::cout << "append:" << ino << std::endl;
-	cout.flush();
+	fprintf(stderr, "appendblock %s woshilog\n", ino);
+	fflush(stderr);
 	
 	blockid_t blockid;
 	extent_protocol::attr attr;
@@ -71,8 +70,8 @@ NameNode::LocatedBlock NameNode::AppendBlock(yfs_client::inum ino)
 
 bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client::inum dst_dir_ino, string dst_name)
 {
-	std::cout << "rename:" << src_dir_ino << src_name << " dst:" << dst_dir_ino << dst_name << std::endl;
-	cout.flush();
+	fprintf(stderr, "rename %s woshilog\n", src_dir_ino);
+	fflush(stdout);
 	
 	string src_buf, dst_buf;
 	ec->get(src_dir_ino, src_buf);
@@ -253,7 +252,7 @@ bool NameNode::Unlink(yfs_client::inum parent, string name, yfs_client::inum ino
 
 	fprintf(stderr, "unlink woshilog\n");
 	fflush(stderr);
-	
+
 	bool res = yfs->unlink(parent, name.c_str());
 	return res;
 }
