@@ -331,7 +331,7 @@ release:
 int
 yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
 {
-	lc->acquire(ino);
+	// lc->acquire(ino);
     int r = OK;
 
     /*
@@ -350,12 +350,12 @@ yfs_client::read(inum ino, size_t size, off_t off, std::string &data)
 	EXT_RPC(ec->getattr(ino, a));
 	if (off >= a.size)
 	{
-		lc->release(ino);
+		// lc->release(ino);
 		return IOERR;
 	}
 	EXT_RPC(ec->get(ino, buf));
 	data = buf.substr(off, size);
-		lc->release(ino);
+		// lc->release(ino);
 
 release:
     return r;
@@ -365,7 +365,7 @@ int
 yfs_client::write(inum ino, size_t size, off_t off, const char *data,
         size_t &bytes_written)
 {
-	lc->acquire(ino);
+	// lc->acquire(ino);
     int r = OK;
 
     /*
@@ -375,7 +375,7 @@ yfs_client::write(inum ino, size_t size, off_t off, const char *data,
      */
 	if (ino < 0 || ino > INODE_NUM || off < 0)
 	{
-		lc->release(ino);
+		// lc->release(ino);
 		return IOERR;
 	}
 	std::string buf;
@@ -398,7 +398,7 @@ yfs_client::write(inum ino, size_t size, off_t off, const char *data,
 	}
 	bytes_written = size;
 	EXT_RPC(ec->put(ino, buf));
-	lc->release(ino);
+	// lc->release(ino);
 release:
     return r;
 }

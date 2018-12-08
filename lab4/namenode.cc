@@ -50,7 +50,7 @@ bool NameNode::Complete(yfs_client::inum ino, uint32_t new_size)
 		lc->release(ino);
 		return true;
 	}
-	lc->release(ino);
+	// lc->release(ino);
 	return false;
 }
 
@@ -253,8 +253,7 @@ bool NameNode::Unlink(yfs_client::inum parent, string name, yfs_client::inum ino
 
 	fprintf(stderr, "unlink woshilog\n");
 	fflush(stderr);
-
-
+	
 	bool res = yfs->unlink(parent, name.c_str());
 	return res;
 }
