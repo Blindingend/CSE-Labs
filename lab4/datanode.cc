@@ -39,6 +39,8 @@ int DataNode::init(const string &extent_dst, const string &namenode, const struc
 	}
 
 	/* Add your initialization here */
+	if (ec->put(1, "") != extent_protocol::OK)
+      printf("error init root dir\n"); // XYB: init root dir
 
 	return 0;
 }
@@ -46,14 +48,17 @@ int DataNode::init(const string &extent_dst, const string &namenode, const struc
 bool DataNode::ReadBlock(blockid_t bid, uint64_t offset, uint64_t len, string &buf)
 {
 	/* Your lab4 part 2 code */
-	cout << "read block:" << bid << " offset:" << offset << " len:" << len << endl;
-	cout.flush();
+	fprintf(stderr, "dn read block woshilog\n");
+	fflush(stderr);
 	string ini_buf;
 	if(!ec->read_block(bid, ini_buf))
 	{
 		return false;
 	}
-	buf = ini_buf.substr(offset, len);
+	if(offset > ini_buf.size())
+		buf = "";
+	else
+		buf = ini_buf.substr(offset, len);
 
 	return true;
 }
@@ -61,8 +66,8 @@ bool DataNode::ReadBlock(blockid_t bid, uint64_t offset, uint64_t len, string &b
 bool DataNode::WriteBlock(blockid_t bid, uint64_t offset, uint64_t len, const string &buf)
 {
 	/* Your lab4 part 2 code */
-	cout << "write block:" << bid << " offset:" << offset << " len:" << len << "buf size" << buf.size() << endl;
- 	cout.flush();
+	fprintf(stderr, "dn write block woshilog\n");
+	fflush(stderr);
 	string ini_buf;
 	if(!ec->read_block(bid, ini_buf))
 	{

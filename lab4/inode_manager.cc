@@ -196,7 +196,7 @@ void inode_manager::put_inode(uint32_t inum, struct inode *ino)
 }
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define BLOCKNUM(a) ((a % BLOCK_SIZE == 0) ?  (a / BLOCK_SIZE) : (a / BLOCK_SIZE + 1))
+#define BLOCKNUM(a) (a / BLOCK_SIZE + (a % BLOCK_SIZE > 0))
 
 /* Get all the data of a file by inum. 
  * Return alloced data, should be freed by caller. */
@@ -434,7 +434,7 @@ void inode_manager::remove_file(uint32_t inum)
 void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 {
 	fprintf(stderr, "im append block woshilog\n");
-	fflush(stdout);
+	fflush(stderr);
 	/*
    * your code goes here.
    */
@@ -465,7 +465,7 @@ void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids)
 {
 	fprintf(stderr, "im get block ids woshilog\n");
-	fflush(stdout);
+	fflush(stderr);
 	/*
    * your code goes here.
    */
@@ -502,7 +502,7 @@ void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids
 void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 {
 	fprintf(stderr, "im write block woshilog\n");
-	fflush(stdout);
+	fflush(stderr);
 
 	/*
    * your code goes here.
@@ -513,7 +513,7 @@ void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 void inode_manager::write_block(blockid_t id, const char buf[BLOCK_SIZE])
 {
 	fprintf(stderr, "im write block woshilog\n");
-	fflush(stdout);
+	fflush(stderr);
 
 	/*
    * your code goes here.
@@ -524,7 +524,7 @@ void inode_manager::write_block(blockid_t id, const char buf[BLOCK_SIZE])
 void inode_manager::complete(uint32_t inum, uint32_t size)
 {
 	fprintf(stderr, "im complete woshilog\n");
-	fflush(stdout);
+	fflush(stderr);
 
 	/*
    * your code goes here.
