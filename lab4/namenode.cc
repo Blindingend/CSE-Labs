@@ -18,7 +18,7 @@ void NameNode::init(const string &extent_dst, const string &lock_dst)
 
 list<NameNode::LocatedBlock> NameNode::GetBlockLocations(yfs_client::inum ino)
 {
-	fprintf(stderr, "getblock woshilog\n");
+	fprintf(stderr, "getblock %d woshilog\n", ino);
 	fflush(stderr);
 
 	std::list<blockid_t> blockids;
@@ -40,7 +40,7 @@ list<NameNode::LocatedBlock> NameNode::GetBlockLocations(yfs_client::inum ino)
 
 bool NameNode::Complete(yfs_client::inum ino, uint32_t new_size)
 {
-	fprintf(stderr, "complete woshilog\n");
+	fprintf(stderr, "complete %d %d woshilog\n", ino, new_size);
 	fflush(stderr);
 
 	extent_protocol::status res = ec->complete(ino, new_size);
@@ -55,7 +55,7 @@ bool NameNode::Complete(yfs_client::inum ino, uint32_t new_size)
 
 NameNode::LocatedBlock NameNode::AppendBlock(yfs_client::inum ino)
 {
-	fprintf(stderr, "appendblock woshilog\n");
+	fprintf(stderr, "appendblock %d woshilog\n", ino);
 	fflush(stderr);
 	
 	blockid_t blockid;
@@ -73,7 +73,7 @@ NameNode::LocatedBlock NameNode::AppendBlock(yfs_client::inum ino)
 
 bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client::inum dst_dir_ino, string dst_name)
 {
-	fprintf(stderr, "rename woshilog\n");
+	fprintf(stderr, "rename %d %s -> %d %s woshilog\n",src_dir_ino, src_name.c_str(), dst_dir_ino, dst_name.c_str());
 	fflush(stderr);
 	
 	string src_buf, dst_buf;
@@ -114,7 +114,7 @@ bool NameNode::Mkdir(yfs_client::inum parent, string name, mode_t mode, yfs_clie
 {
 	// std::cout << "mkdir:" << name << "mode:" << mode << std::endl;
 	// cout.flush();
-	fprintf(stderr, "mkdir woshilog\n");
+	fprintf(stderr, "mkdir %s %d in %d woshilog\n", name.c_str(), ino_out);
 	fflush(stderr);
 
 	
@@ -126,7 +126,7 @@ bool NameNode::Create(yfs_client::inum parent, string name, mode_t mode, yfs_cli
 {
 	// std::cout << "create:" << name << "mode:" << mode << std::endl;
 	// cout.flush();
-	fprintf(stderr, "create woshilog\n");
+	fprintf(stderr, "create %d %s %d woshilog\n", parent, name.c_str(), ino_out);
 	fflush(stderr);
 	
 	bool res = yfs->create(parent, name.c_str(), mode, ino_out);
@@ -187,8 +187,8 @@ bool NameNode::Isdir(yfs_client::inum ino)
 
 bool NameNode::Getfile(yfs_client::inum ino, yfs_client::fileinfo &info)
 {
-	fprintf(stderr, "getfile woshilog\n");
-	fflush(stderr);
+	// fprintf(stderr, "getfile woshilog\n");
+	// fflush(stderr);
 
 	extent_protocol::attr attr;
 	if(ec->getattr(ino, attr) != extent_protocol::OK)
@@ -205,8 +205,8 @@ bool NameNode::Getfile(yfs_client::inum ino, yfs_client::fileinfo &info)
 
 bool NameNode::Getdir(yfs_client::inum ino, yfs_client::dirinfo &info)
 {
-	fprintf(stderr, "getdir woshilog\n");
-	fflush(stderr);
+	// fprintf(stderr, "getdir woshilog\n");
+	// fflush(stderr);
 
 	extent_protocol::attr attr;
 	if(ec->getattr(ino, attr) != extent_protocol::OK)
@@ -218,8 +218,8 @@ bool NameNode::Getdir(yfs_client::inum ino, yfs_client::dirinfo &info)
 	info.ctime = attr.ctime;
 
 
-	fprintf(stderr, "getdir2 woshilog\n");
-	fflush(stderr);
+	// fprintf(stderr, "getdir2 woshilog\n");
+	// fflush(stderr);
 	return true;
 }
 
@@ -236,7 +236,7 @@ bool NameNode::Readdir(yfs_client::inum ino, std::list<yfs_client::dirent> &dir)
 	if(ec->get(ino, buf) != extent_protocol::OK)
 	{
 		printf("readdir: error with get\n");
-		fflush(stderr);
+		fflush(stdout);
 		return false;
 	}
 	std::istringstream ist(buf);
@@ -252,7 +252,6 @@ bool NameNode::Unlink(yfs_client::inum parent, string name, yfs_client::inum ino
 {
 	fprintf(stderr, "unlink woshilog parent: %d, name: %s, ino: %d\n", parent, name.c_str(), ino);
 	fflush(stderr);
-
 
 	bool res = !yfs->unlink(parent, name.c_str());
 	fprintf(stderr, "unlink ok\n");

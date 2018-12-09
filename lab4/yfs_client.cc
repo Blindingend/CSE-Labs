@@ -256,6 +256,9 @@ yfs_client::lookup(inum parent, const char *name, bool &found, inum &ino_out)
 {
     int r = OK;
 
+		printf("yfs look up %s %d in %d \n", name, ino_out, parent);
+	fflush(stdout);
+
     /*
      * your code goes here.
      * note: lookup file from parent dir according to name;
