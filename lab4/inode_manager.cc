@@ -433,18 +433,27 @@ void inode_manager::remove_file(uint32_t inum)
 
 void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 {
-	fprintf(stderr, "im append block woshilog\n");
-	fflush(stderr);
+	printf("im append block woshilog\n");
 	/*
    * your code goes here.
    */
 	inode_t *ino = get_inode(inum);
-	if (ino == NULL)
+	if(ino == NULL)
+	{
+		fprintf(stderr,"ino is null");
 		return;
-	
-	int blocknum = BLOCKNUM(ino->size);
+	}
+	printf("ino size is %d \n", ino->size);
+	int blocknum = ino->size / BLOCK_SIZE + (ino->size % BLOCK_SIZE > 0);
+	printf("blocknum is %d woshilog\n", blocknum);	
+	if (blocknum > MAXFILE)
+	{
+		fprintf(stderr, "%d is too big woshilog\n", blocknum);
+    	return;
+  	}
 	int NIN[NINDIRECT];
 	int blockid = bm->alloc_block();
+	printf("blockid is %d woshilog\n", blockid);	
 	if(blocknum < NDIRECT)
 	{
 		ino->blocks[blocknum] = blockid;
@@ -459,7 +468,9 @@ void inode_manager::append_block(uint32_t inum, blockid_t &bid)
 		bm->write_block(ino->blocks[NDIRECT], (char*)NIN);
 	}
 	ino->size += BLOCK_SIZE;
+	bid = blockid;
 	put_inode(inum, ino);
+	printf("hahahahah\n");
 }
 
 void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids)
@@ -473,7 +484,7 @@ void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids
 	if (ino == NULL)
 		return;
 	
-	int blocknum = BLOCKNUM(ino->size);
+	int blocknum = ino->size / BLOCK_SIZE + (ino->size % BLOCK_SIZE > 0);
 	if(blocknum < NDIRECT)
 	{
 		for(size_t i = 0; i < blocknum; i++)

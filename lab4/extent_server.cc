@@ -70,11 +70,11 @@ int extent_server::getattr(extent_protocol::extentid_t id, extent_protocol::attr
 
 int extent_server::remove(extent_protocol::extentid_t id, int &)
 {
-  printf("extent_server: write %lld\n", id);
+  printf("extent_server: remove %lld\n", id);
 
   id &= 0x7fffffff;
   im->remove_file(id);
- 
+  printf("remove done\n");
   return extent_protocol::OK;
 }
 
@@ -83,6 +83,7 @@ int extent_server::append_block(extent_protocol::extentid_t id, blockid_t &bid)
   id &= 0x7fffffff;
 
   im->append_block(id, bid);
+  printf("es call im done\n");
 
   return extent_protocol::OK;
 }
