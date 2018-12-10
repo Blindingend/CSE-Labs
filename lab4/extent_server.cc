@@ -100,6 +100,7 @@ int extent_server::get_block_ids(extent_protocol::extentid_t id, std::list<block
 int extent_server::read_block(blockid_t id, std::string &buf)
 {
   char _buf[BLOCK_SIZE];
+  printf("es read block \n");
 
   im->read_block(id, _buf);
   buf.assign(_buf, BLOCK_SIZE);
@@ -109,6 +110,8 @@ int extent_server::read_block(blockid_t id, std::string &buf)
 
 int extent_server::write_block(blockid_t id, std::string buf, int &)
 {
+  printf("es write block \n");
+
   if (buf.size() != BLOCK_SIZE)
     return extent_protocol::IOERR;
 

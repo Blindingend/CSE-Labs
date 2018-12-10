@@ -512,7 +512,7 @@ void inode_manager::get_block_ids(uint32_t inum, std::list<blockid_t> &block_ids
 
 void inode_manager::read_block(blockid_t id, char buf[BLOCK_SIZE])
 {
-	fprintf(stderr, "im write block woshilog\n");
+	fprintf(stderr, "im read block woshilog\n");
 	fflush(stderr);
 
 	/*

@@ -48,17 +48,16 @@ int DataNode::init(const string &extent_dst, const string &namenode, const struc
 bool DataNode::ReadBlock(blockid_t bid, uint64_t offset, uint64_t len, string &buf)
 {
 	/* Your lab4 part 2 code */
-	fprintf(stderr, "dn read block woshilog\n");
+	fprintf(stderr, "dn read block bid: %d offset: %d len: %d \n----------------------------------\n", bid, offset, len);
 	fflush(stderr);
 	string ini_buf;
-	if(!ec->read_block(bid, ini_buf))
-	{
-		return false;
-	}
+	ec->read_block(bid, ini_buf);
 	if(offset > ini_buf.size())
 		buf = "";
 	else
 		buf = ini_buf.substr(offset, len);
+	printf("buf is : ", buf.c_str());
+	fflush(stdout);
 
 	return true;
 }
@@ -66,13 +65,16 @@ bool DataNode::ReadBlock(blockid_t bid, uint64_t offset, uint64_t len, string &b
 bool DataNode::WriteBlock(blockid_t bid, uint64_t offset, uint64_t len, const string &buf)
 {
 	/* Your lab4 part 2 code */
-	fprintf(stderr, "dn write block woshilog\n");
+	fprintf(stderr, "dn write block bid: %d offset: %d len: %d buf: %s  \n----------------------------------\n", bid, offset, len, buf.c_str());
 	fflush(stderr);
-	string ini_buf;
-	if(!ec->read_block(bid, ini_buf))
+	if (buf.size() == 0)
 	{
-		return false;
+		printf("size 0\n");
+		fflush(stdout);
+		return true;		
 	}
+	string ini_buf;
+	ec->read_block(bid, ini_buf);
 	ini_buf = ini_buf.substr(0, offset) + buf + ini_buf.substr(offset+len);
 	ec->write_block(bid, ini_buf);
 
