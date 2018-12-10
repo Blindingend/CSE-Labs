@@ -111,8 +111,8 @@ check_dfs() {
   check_ls
   check_put
   check_cat
-  # check_mkdir
-  # check_rm
+  check_mkdir
+  check_rm
   quiet $HADOOP/bin/hdfs dfs -rm -f -r /test_touch /test_put /test_mkdir
 }
 
@@ -246,7 +246,7 @@ test_hdfs_to_yfs() {
 }
 
 test_interoperability() {
-  test_yfs_to_hdfs
+  # test_yfs_to_hdfs
   quiet rm -rf yfs/*
   test_hdfs_to_yfs
   quiet $HADOOP/bin/hdfs dfs -rm -r -f /test4 /test7 /testdir2
@@ -270,6 +270,6 @@ stop_yfs
 send_yfs
 start_yfs
 check_dfs
-# test_interoperability
+test_interoperability
 stop_yfs_quiet
 print_score
