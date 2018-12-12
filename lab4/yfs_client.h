@@ -6,7 +6,6 @@
 #include "lock_protocol.h"
 #include "lock_client.h"
 #include "lock_client_cache.h"
-
 //#include "yfs_protocol.h"
 #include "extent_client.h"
 #include <vector>
@@ -14,7 +13,7 @@
 
 class yfs_client {
   extent_client *ec;
-  lock_client_cache *lc;
+  lock_client *lc;
  public:
 
   typedef unsigned long long inum;
@@ -27,13 +26,15 @@ class yfs_client {
     unsigned long mtime;
     unsigned long ctime;
   };
-  struct dirinfo {
-    unsigned long atime;
-    unsigned long mtime;
-    unsigned long ctime;
-  };
-  struct slinkinfo {
+  struct symlinkinfo
+  {
+    /* data */
     unsigned long long size;
+    unsigned int atime;
+    unsigned int mtime;
+    unsigned int ctime;
+  };
+  struct dirinfo {
     unsigned long atime;
     unsigned long mtime;
     unsigned long ctime;
@@ -49,26 +50,28 @@ class yfs_client {
 
  public:
   yfs_client(std::string, std::string);
+  yfs_client(extent_client * nec, lock_client* lock_dst);
 
   bool isfile(inum);
   bool isdir(inum);
+  bool issymlink(inum);
 
   int getfile(inum, fileinfo &);
   int getdir(inum, dirinfo &);
+  int getsymlink(inum, symlinkinfo &);
 
   int setattr(inum, size_t);
   int lookup(inum, const char *, bool &, inum &);
   int create(inum, const char *, mode_t, inum &);
   int readdir(inum, std::list<dirent> &);
-  int writedir(inum, std::list<dirent> &);
   int write(inum, size_t, off_t, const char *, size_t &);
   int read(inum, size_t, off_t, std::string &);
   int unlink(inum,const char *);
   int mkdir(inum , const char *, mode_t , inum &);
-  int symlink(inum, const char *, const char *, inum&);
-  int readlink(inum, std::string& );
-  int getslink(inum, slinkinfo& );
-  /** you may need to add symbolic link related methods here.*/
+  int symlink(const char *, inum, const char *, inum &);
+  int readlink(inum, std::string &);
+  int pathToInum(const char *, inum);
+  int allPath(const char *, inum);
 };
 
 #endif 
