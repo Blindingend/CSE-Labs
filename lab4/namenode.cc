@@ -79,37 +79,36 @@ bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client:
 	fprintf(stderr, "rename %d %s -> %d %s \n------------------------------\n",src_dir_ino, src_name.c_str(), dst_dir_ino, dst_name.c_str());
 	fflush(stderr);
 	
-	string src_buf, dst_buf;
-	ec->get(src_dir_ino, src_buf);
-	ec->get(dst_dir_ino, dst_buf);
 	bool found = false;
-	int i = 0;
-	yfs_client::inum dst_ino;
-	const char * nametemp;
-	while(i < src_buf.size())
+	std::list<yfs_client::dirent> src_dir_list;
+	std::list<yfs_client::dirent> dst_dir_list;
+	yfs->readdir(src_dir_ino, src_dir_list);
+	yfs->readdir(dst_dir_ino, dst_dir_list);
+	
+	std::list<yfs_client::dirent>::iterator it;
+	yfs_client::dirent temp;
+
+	for(it = src_dir_list.begin(); it != src_dir_list.end(); it++)
 	{
-		nametemp = src_buf.c_str() + i;
-		if(strcmp(nametemp, src_name.c_str()))
+		if(it->name == src_name)
 		{
+			temp.name = it->name;
+			temp.inum = it->inum;
 			found = true;
-			dst_ino = *(uint32_t *)(nametemp + strlen(nametemp) + 1);
-			src_buf.erase(i, strlen(nametemp) + 1 + sizeof(uint));
 			break;
 		}
-		i += strlen(nametemp) + 1 + sizeof(uint);
 	}
 	if(found)
 	{
-		if (src_dir_ino == dst_dir_ino)
+		if(src_dir_ino == dst_dir_ino)
 		{
-     	 	dst_buf = src_buf;
-    	}
-		dst_buf += dst_name;
-		dst_buf.resize(dst_buf.size() + 5, 0);
-		*(uint32_t *)(dst_buf.c_str()+dst_buf.size()-4) = dst_ino;
-		ec->put(src_dir_ino, src_buf);
-		ec->put(dst_dir_ino, dst_buf);
+			dst_dir_list = src_dir_list;
+		}
+		dst_dir_list.push_back(temp);
+		yfs->writedir(src_dir_ino, src_dir_list);
+		yfs->writedir(dst_dir_ino, dst_dir_list);
 	}
+	
 	return found;
 }
 

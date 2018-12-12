@@ -427,7 +427,6 @@ int yfs_client::unlink(inum parent,const char *name)
 	std::list<dirent> dir_list;
 	std::list<dirent>::iterator it;
 	bool found = false;
-
 	EXT_RPC(readdir(parent, dir_list));
 	for (it = dir_list.begin(); it != dir_list.end(); ++it)
 		if(it->name == name)
