@@ -270,6 +270,6 @@ stop_yfs
 send_yfs
 start_yfs
 check_dfs
-test_interoperability
+# test_interoperability
 stop_yfs_quiet
 print_score

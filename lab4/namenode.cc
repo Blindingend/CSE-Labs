@@ -131,12 +131,7 @@ bool NameNode::Create(yfs_client::inum parent, string name, mode_t mode, yfs_cli
 	fflush(stderr);
 
 	bool res = yfs->create(parent, name.c_str(), mode, ino_out);
-	// if(tick == 1)
-	// {
-	// 	unsigned long long int a = 3;
-	// 	yfs->create(1, "test_put", mode, a);
-	// 	tick -= 1;
-	// }†
+
 	return !res;
 }
 
