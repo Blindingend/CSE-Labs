@@ -69,7 +69,7 @@ NameNode::LocatedBlock NameNode::AppendBlock(yfs_client::inum ino)
 	fprintf(stderr, "append ok %d \n------------------------------\n", blockid);
 	fflush(stderr);
 
-	LocatedBlock lb(blockid, attr.size, (attr.size % BLOCK_SIZE) ? attr.size & BLOCK_SIZE : BLOCK_SIZE, GetDatanodes());
+  LocatedBlock lb(blockid, attr.size, (attr.size % BLOCK_SIZE) ? attr.size % BLOCK_SIZE : BLOCK_SIZE, GetDatanodes());
 	return lb;
 }
 
@@ -88,7 +88,7 @@ bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client:
 	while (i < src_buf.size())
 	{
 		nametemp = src_buf.c_str() + i;
-		if (strcmp(nametemp, src_name.c_str()))
+		if (!strcmp(nametemp, src_name.c_str()))
 		{
 			found = true;
 			dst_ino = *(uint32_t *)(nametemp + strlen(nametemp) + 1);
