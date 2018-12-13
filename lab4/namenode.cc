@@ -88,7 +88,7 @@ bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client:
 	while (i < src_buf.size())
 	{
 		nametemp = src_buf.c_str() + i;
-		if (strcmp(nametemp, src_name.c_str()))
+		if (!strcmp(nametemp, src_name.c_str()))
 		{
 			found = true;
 			dst_ino = *(uint32_t *)(nametemp + strlen(nametemp) + 1);
