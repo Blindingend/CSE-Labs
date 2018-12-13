@@ -74,7 +74,7 @@ NameNode::LocatedBlock NameNode::AppendBlock(yfs_client::inum ino)
 
 bool NameNode::Rename(yfs_client::inum src_dir_ino, string src_name, yfs_client::inum dst_dir_ino, string dst_name)
 {
-	fprintf(stderr, "rename woshilog\n");
+	fprintf(stderr, "rename %d %s %d %s \n---------------------------\n", src_dir_ino, src_name.c_str(), dst_dir_ino, dst_name.c_str());
 	fflush(stderr);
 
 	string src_buf, dst_buf;
@@ -128,7 +128,7 @@ bool NameNode::Create(yfs_client::inum parent, string name, mode_t mode, yfs_cli
 	// cout.flush();
 	fprintf(stderr, "create %d %s %d \n------------------------------\n", parent, name.c_str(), ino_out);
 	fflush(stderr);
-
+	lc->release(parent);
 	bool res = yfs->create(parent, name.c_str(), mode, ino_out);
 
 	return !res;
