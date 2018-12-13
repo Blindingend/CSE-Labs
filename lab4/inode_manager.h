@@ -10,12 +10,14 @@
 #define BLOCK_SIZE (1024*16)
 #define BLOCK_NUM  (DISK_SIZE/BLOCK_SIZE)
 
+typedef uint32_t blockid_t;
+
 // disk layer -----------------------------------------
 
 class disk {
  private:
   unsigned char blocks[BLOCK_NUM][BLOCK_SIZE];
-
+  
  public:
   disk();
   void read_block(uint32_t id, char *buf);
@@ -66,7 +68,7 @@ class block_manager {
 #define MAXFILE (NDIRECT + NINDIRECT)
 
 typedef struct inode {
-  unsigned int type;
+  short type;
   unsigned int size;
   unsigned int atime;
   unsigned int mtime;
@@ -77,6 +79,7 @@ typedef struct inode {
 class inode_manager {
  private:
   block_manager *bm;
+  std::map <uint32_t, int> using_ino;
   struct inode* get_inode(uint32_t inum);
   void put_inode(uint32_t inum, struct inode *ino);
 
