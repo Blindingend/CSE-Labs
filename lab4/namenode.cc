@@ -13,7 +13,7 @@ void NameNode::init(const string &extent_dst, const string &lock_dst)
 {
 	ec = new extent_client(extent_dst);
 	lc = new lock_client_cache(lock_dst);
-	yfs = new yfs_client(extent_dst, lock_dst);
+	yfs = new yfs_client(ec, lc);
 
 	/* Add your init logic here */
 }
@@ -51,7 +51,6 @@ bool NameNode::Complete(yfs_client::inum ino, uint32_t new_size)
 		lc->release(ino);
 		return true;
 	}
-	lc->release(ino);
 	return false;
 }
 
