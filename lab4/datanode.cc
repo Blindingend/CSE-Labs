@@ -39,10 +39,21 @@ int DataNode::init(const string &extent_dst, const string &namenode, const struc
 	}
 
 	/* Add your initialization here */
+	NewThread(this, &DataNode::heartbeat);
+
 	if (ec->put(1, "") != extent_protocol::OK)
       printf("error init root dir\n"); // XYB: init root dir
 
 	return 0;
+}
+
+void DataNode::heartbeat()
+{
+	while(true)
+	{
+		SendHeartbeat();
+		sleep(1);
+	}
 }
 
 bool DataNode::ReadBlock(blockid_t bid, uint64_t offset, uint64_t len, string &buf)
